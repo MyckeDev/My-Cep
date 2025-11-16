@@ -1,0 +1,62 @@
+-- CRIAR BANCO DE DADOS
+CREATE DATABASE IF NOT EXISTS mycep;
+USE mycep;
+
+-- CRIAR TABELA DE USUÁRIOS
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    address VARCHAR(500) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+
+
+
+📌 Explicação das Colunas
+Coluna	Tipo	Função
+id	INT AI PK	Identificador único do usuário
+name	VARCHAR(255)	Nome cadastrado
+email	VARCHAR(255)	Email cadastrado
+address	VARCHAR(500)	Endereço completo (CEP + logradouro + etc.)
+created_at	TIMESTAMP	Data/hora de criação automática
+
+🧩 Como o backend ficaria com MySQL (resumo rápido)
+Se quiser ativar MySQL no backend:
+
+Instalar dependência:
+
+bash
+Copiar código
+npm install mysql
+Criar conexão:
+
+js
+Copiar código
+const mysql = require("mysql");
+
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "mycep"
+});
+Substituir o insert in-memory por INSERT SQL
+
+js
+Copiar código
+db.query(
+    "INSERT INTO users (name, email, address) VALUES (?, ?, ?)",
+    [name, email, address],
+    () => res.json({ message: "User registered successfully!" })
+);
+Substituir listagem in-memory por SELECT SQL
+
+js
+Copiar código
+db.query("SELECT * FROM users ORDER BY id DESC", (err, result) => {
+    res.json(result);
+});
